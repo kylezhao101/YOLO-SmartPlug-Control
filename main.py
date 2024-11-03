@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+import os
 from ultralytics import YOLO
 from pyHS100 import SmartPlug  # https://github.com/GadgetReactor/pyHS100
 import cv2 as cv
@@ -9,7 +10,7 @@ import time
 model = YOLO('best.pt') 
 load_dotenv() 
 kasa_plug_ip = os.getenv('KASA_PLUG_IP')
-plug = SmartPlug(kasa_plug)
+plug = SmartPlug(kasa_plug_ip)
 
 cap = cv.VideoCapture(0)
 
