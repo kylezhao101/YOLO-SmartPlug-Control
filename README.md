@@ -2,6 +2,8 @@
 
 This project uses a YOLOv8 model fine-tuned on two datasets, [Kyle & Terence Data](https://universe.roboflow.com/iat360kasa/iat360-test) and [Rock-Paper-Scissors Computer Vision Project](https://universe.roboflow.com/roboflow-58fyf/rock-paper-scissors-sxsw), to detect hand gestures through webcam input and control a TP-Link Kasa smart plug accordingly.
 
+Note:The Roboflow API key is revoked. Replace with your own key.
+
 ## Main Files
 - **IAT350_YOLO_KASA_plug.ipynb**: This notebook trains the YOLOv8 model using the specified datasets and saves the best model as `best.pt`.
 - **main.py**: Uses `best.pt` to perform real-time object detection via a webcam feed, interact with the Kasa Smart Plug library, and trigger the plug based on detected gestures.
