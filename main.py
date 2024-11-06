@@ -2,20 +2,19 @@ from dotenv import load_dotenv
 import os
 from ultralytics import YOLO
 from pyHS100 import SmartPlug  # https://github.com/GadgetReactor/pyHS100
-import cv2 as cv 
+import cv2 as cv
 import numpy as np
 import time
 
 # Initialize YOLO model and SmartPlug
-model = YOLO('best.pt') 
-load_dotenv() 
+model = YOLO('best.pt')
+load_dotenv()
 kasa_plug_ip = os.getenv('KASA_PLUG_IP')
 plug = SmartPlug(kasa_plug_ip)
 
 cap = cv.VideoCapture(0)  # https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html
 
 # Plug Control Functions
-print("Current state: %s" % plug.state)
 def turn_on():
     if plug.state == "OFF":
         plug.turn_on()
@@ -26,6 +25,7 @@ def turn_off():
         plug.turn_off()
         print("Plug turned OFF")
 
+# Check if the camera opened successfully
 if not cap.isOpened():
     print("Cannot open camera")
     exit()
@@ -33,9 +33,9 @@ if not cap.isOpened():
 # Parameters for control delay
 CONTROL_DELAY = 2  # Time in seconds between plug control checks
 last_control_time = time.time()
-CONFIDENCE_THRESHOLD = 0.7
+CONFIDENCE_THRESHOLD = 0.6
 
-# Read the first frame to initialize movement detection
+# Read the first frame to initialize
 ret, prev_frame = cap.read()
 if not ret:
     print("Can't receive initial frame. Exiting ...")
@@ -104,6 +104,10 @@ while True:
         elif rock_detected:
             turn_off()
         last_control_time = current_time
+
+    # Add plug status to the frame
+    plug_status = f"Plug Status: {plug.state}"
+    cv.putText(frame, plug_status, (10, 30), cv.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
 
     # Display the resulting frame
     cv.imshow('frame', frame)
